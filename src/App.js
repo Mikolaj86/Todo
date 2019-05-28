@@ -1,4 +1,4 @@
-import React { Component } from 'react';
+import React, { Component } from 'react';
 import List from './components/TodoList'
 import Form from './components/TodoForm'
 

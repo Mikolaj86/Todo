@@ -1,6 +1,7 @@
 import React from 'react';
+import List from "./TodoList";
 
-export const Form = props => {
+const Form = props => {
     return (
         <form>
             <input name="todo" type="text" placeholder="enter the task" />
@@ -9,3 +10,5 @@ export const Form = props => {
         </form>
     )
 }
+
+export default Form;
