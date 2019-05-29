@@ -33,12 +33,22 @@ class App extends Component {
         })
     }
 
+    toggleComplete = itemId => {
+        const todos = this.state.todos.map(todo => {
+            if (todo.id === itemId) {
+                todo.completed = !todo.completed
+            }
+            return todo
+        });
+        this.setState({todos, todo: ''})
+    }
+
 
     render() {
         return (
             <div className="App">
                 <h1>To Do List</h1>
-                <List todos={this.state.todos}/>
+                <List todos={this.state.todos} toggleComplete={this.toggleComplete} />
                 <Form todos={this.state.todos} value={this.state.todo} inputChangeHandler={this.inputChangeHandler} addTask={this.addTask} />
             </div>
         );
