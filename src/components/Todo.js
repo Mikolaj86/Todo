@@ -7,7 +7,7 @@ const Todo = props => {
         onClick={event => {
             props.toggleComplete(props.todo.id)
         }}>
-            <p>{props.todo.task}</p>
+            <p>{props.todo.task}{props.todo.completed && 'ok'}</p>
         </div>
     )
 }
