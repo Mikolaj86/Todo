@@ -10,7 +10,7 @@ const Form = props => {
                    value={props.value}
                    onChange={props.inputChangeHandler} />
             <button onClick={props.addTask}>Add a task</button>
-            <button>Remove task</button>
+            <button onClick={props.removeItems}>Remove completed</button>
         </form>
     )
 }
