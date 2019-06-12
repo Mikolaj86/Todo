@@ -37,6 +37,14 @@ class App extends Component {
         })
     }
 
+    onDelete = (id) =>  {
+        const search = this.state.todos.findIndex((element) => {
+            return element.id == id
+        });
+        this.state.todos.splice(search, 1)
+        this.setState({todos:this.state.todos})
+    }
+
 
     toggleComplete = itemId => {
         const todos = this.state.todos.map(todo => {
@@ -57,6 +65,7 @@ class App extends Component {
             }
         })
     }
+
 
     saveLocalStorage() {
         for (let key in this.state) {
@@ -99,9 +108,9 @@ class App extends Component {
         return (
             <div className="App">
                 <h1>To Do List</h1>
-                <List todos={this.state.todos} toggleComplete={this.toggleComplete} />
+                <List todos={this.state.todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete} />
                 <Form todos={this.state.todos} value={this.state.todo} inputChangeHandler={this.inputChangeHandler}
-                      addTask={this.addTask} romoveItems={this.removeItems}/>
+                      addTask={this.addTask} removeItems={this.removeItems}/>
             </div>
         );
     }

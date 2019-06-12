@@ -6,7 +6,8 @@ const Todo = props => {
             <p key={props.todo.id}
                onClick={event => {
                    props.toggleComplete(props.todo.id)
-               }}>{props.todo.task}{props.todo.completed && ' Completed'}</p> <button onClick={props.onDelete}>x</button>
+               }}>{props.todo.task}{props.todo.completed && ' Completed'}</p>
+            <button onClick={event => {props.onDelete(props.todo.id)}}>x</button>
         </div>
     )
 }
