@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import List from './components/TodoList'
-import Form from './components/TodoForm'
+import List from './components/TodoList';
+import Form from './components/TodoForm';
+import Header from './components/Header';
 
 
 class App extends Component {
@@ -13,8 +14,9 @@ class App extends Component {
                 //completed: false,
                 // all of our to-dos
             ],
-            todo: ''
+            todo: '',
             // an empty string to hold an individual to-do
+            filtertodos: []
         }
     }
 
@@ -66,6 +68,10 @@ class App extends Component {
         })
     }
 
+    updateFilter = st => {
+        this.setState({filtertodos: st})
+    }
+
 
     saveLocalStorage() {
         for (let key in this.state) {
@@ -105,12 +111,22 @@ class App extends Component {
 
 
     render() {
+
+        let todos = [];
+        if (this.state.filtertodos === "all") {
+            todos = this.state.todos;
+        } else if (this.state.filtertodos === "uncomplete") {
+            todos = this.state.todos.filter(todo => !todo.completed);
+        } else if (this.state.filtertodos === "complete") {
+            todos = this.state.todos.filter(todo => todo.completed);
+        }
+
         return (
             <div className="App">
-                <h1>To Do List</h1>
-                <List todos={this.state.todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete} />
+                <Header />
+                <List todos={todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete} />
                 <Form todos={this.state.todos} value={this.state.todo} inputChangeHandler={this.inputChangeHandler}
-                      addTask={this.addTask} removeItems={this.removeItems}/>
+                      addTask={this.addTask} removeItems={this.removeItems} updateFilter={this.updateFilter} />
             </div>
         );
     }
