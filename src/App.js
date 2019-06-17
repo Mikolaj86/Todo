@@ -31,13 +31,15 @@ class App extends Component {
         let newTask = {
             task: this.state.todo,
             id: Date.now(),
-            completed: false
+            completed: false,
+            editing: false
         };
         this.setState({
             todos: [...this.state.todos, newTask],
             todo: ''
         })
     }
+
 
     onDelete = (id) =>  {
         const search = this.state.todos.findIndex((element) => {
@@ -70,6 +72,43 @@ class App extends Component {
 
     updateFilter = st => {
         this.setState({filtertodos: st})
+    }
+
+    handleEditing = (id) => {
+        const todos = this.state.todos.map(todo => {
+            if (todo.id === id) {
+                todo.editing = !todo.editing
+            }
+            return todo
+        });
+        this.setState({
+            todos : todos,
+            todo: {
+                changedText: this.todo.task,
+            }
+        })
+
+    }
+    handleEditingDone = event => {
+        if (event.keyCode === 13) {
+            this.setState(prevState => ({
+                todo: {                   // object that we want to update
+                    editing: false,       // update the value of specific key
+                }
+            }));
+        }
+    }
+    handleEditingChange = event => {
+        let _changedText = event.target.value;
+        this.setState({
+            todo: {changedText: _changedText}
+        });
+    }
+
+    componentDidMount() {
+        this.setState({
+            todo: {changedText: this.todo.task}
+        })
     }
 
 
@@ -113,18 +152,22 @@ class App extends Component {
     render() {
 
         let todos = [];
-        if (this.state.filtertodos === "all") {
+
+
+        if (this.state.filtertodos === 'all') {
             todos = this.state.todos;
-        } else if (this.state.filtertodos === "uncomplete") {
+        } else if (this.state.filtertodos === 'uncomplete') {
             todos = this.state.todos.filter(todo => !todo.completed);
-        } else if (this.state.filtertodos === "complete") {
+        } else if (this.state.filtertodos === 'complete') {
             todos = this.state.todos.filter(todo => todo.completed);
         }
 
         return (
             <div className="App">
                 <Header />
-                <List todos={todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete} />
+                <List todos={todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete}
+                      handleEditing={this.handleEditing} handleEditingDone={this.handleEditingDone}
+                      handleEditingChange={this.handleEditingChange} changedText={this.state.changedText} />
                 <Form todos={this.state.todos} value={this.state.todo} inputChangeHandler={this.inputChangeHandler}
                       addTask={this.addTask} removeItems={this.removeItems} updateFilter={this.updateFilter} />
             </div>
