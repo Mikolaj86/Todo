@@ -75,29 +75,52 @@ class App extends Component {
     }
 
     handleEditing = (id) => {
+        let task = '';
+
         const todos = this.state.todos.map(todo => {
             if (todo.id === id) {
                 todo.editing = !todo.editing
+                task = todo.task
             }
             return todo
         });
+        console.log("editing ", task)
         this.setState({
             todos : todos,
-            todo: {
-                changedText: this.todo.task,
-            }
+             todo: {
+               changedText: task,
+             }
         })
 
     }
-    handleEditingDone = event => {
-        if (event.keyCode === 13) {
-            this.setState(prevState => ({
-                todo: {                   // object that we want to update
-                    editing: false,       // update the value of specific key
+    handleEditingDone = (event, id) => {
+        console.log('editing done')
+        console.log(id)
+        if(event.keyCode === 13) {
+            const todos = this.state.todos.map(todo => {
+                if (todo.id === id) {
+                    todo.task = this.state.todo.changedText
+                    todo.editing = false
                 }
-            }));
+                return todo;
+            })
+            console.log(todos)
+            // this.setState( {
+            //     todos
+            // })
         }
+
+
+
+        // if (event.keyCode === 13) {
+        //     this.setState(prevState => ({
+        //         todo: {                   // object that we want to update
+        //             editing: false,       // update the value of specific key
+        //         }
+        //     }));
+        // }
     }
+
     handleEditingChange = event => {
         let _changedText = event.target.value;
         this.setState({
@@ -105,23 +128,22 @@ class App extends Component {
         });
     }
 
-    componentDidMount() {
-        this.setState({
-            todo: {changedText: this.todo.task}
-        })
-    }
+
 
 
     saveLocalStorage() {
+
         for (let key in this.state) {
             localStorage.setItem(key, JSON.stringify(this.state[key]))
         }
     }
 
-    addLocalStorage() {
+    getFromLocalStorage() {
+
         for (let key in this.state) {
             if (localStorage.hasOwnProperty(key)) {
                 let value = localStorage.getItem(key);
+                // console.log(value)
                 try {
                     value = JSON.parse(value);
                     this.setState({[key]: value})
@@ -134,25 +156,25 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.addLocalStorage();
+        this.getFromLocalStorage();
         window.addEventListener(
             "beforeunload",
+
             this.saveLocalStorage.bind(this)
         )
     }
 
-    componentWillMount() {
-        window.removeEventListener(
-            "beforeunload",
-            this.saveLocalStorage.bind(this)
-        )
-    }
+    // componentWillMount() {
+    //     window.removeEventListener(
+    //         "beforeunload",
+    //         this.saveLocalStorage.bind(this)
+    //     )
+    // }
 
 
     render() {
 
         let todos = [];
-
 
         if (this.state.filtertodos === 'all') {
             todos = this.state.todos;
@@ -161,13 +183,15 @@ class App extends Component {
         } else if (this.state.filtertodos === 'complete') {
             todos = this.state.todos.filter(todo => todo.completed);
         }
-
+        // console.log(todos)
+        // console.log(this.state)
+        // debugger
         return (
             <div className="App">
                 <Header />
                 <List todos={todos} toggleComplete={this.toggleComplete} onDelete={this.onDelete}
                       handleEditing={this.handleEditing} handleEditingDone={this.handleEditingDone}
-                      handleEditingChange={this.handleEditingChange} changedText={this.state.changedText} />
+                      handleEditingChange={this.handleEditingChange} changedText={this.state.todo.changedText} />
                 <Form todos={this.state.todos} value={this.state.todo} inputChangeHandler={this.inputChangeHandler}
                       addTask={this.addTask} removeItems={this.removeItems} updateFilter={this.updateFilter} />
             </div>
