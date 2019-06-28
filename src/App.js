@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import List from './components/TodoList';
 import Form from './components/TodoForm';
 import Header from './components/Header';
-
+import Axios from 'axios';
 
 class App extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class App extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
 
-    addTask = event => {
+    async addTask = event => {
         event.preventDefault();
         let newTask = {
             task: this.state.todo,
@@ -38,15 +38,17 @@ class App extends Component {
             todos: [...this.state.todos, newTask],
             todo: ''
         })
+        const {data} = await Axios.post('http//mysite.pl/to-do-list', newTask)
     }
 
 
-    onDelete = (id) =>  {
+    async onDelete = (id) =>  {
         const search = this.state.todos.findIndex((element) => {
             return element.id == id
         });
         this.state.todos.splice(search, 1)
         this.setState({todos:this.state.todos})
+    await Axios.delete(`http//mysite.pl/to-do-list/${id}`)
     }
 
 
@@ -93,7 +95,7 @@ class App extends Component {
         })
 
     }
-    handleEditingDone = (event, id) => {
+    async handleEditingDone = (event, id) => {
         console.log('editing done')
         console.log(id)
         if(event.keyCode === 13) {
@@ -109,6 +111,7 @@ class App extends Component {
                  todos
             })
         }
+        const {data} = await Axios.put(`http//mysite.pl/to-do-list/${id}`, todo)
 
     }
 
@@ -146,13 +149,15 @@ class App extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getFromLocalStorage();
         window.addEventListener(
             "beforeunload",
 
             this.saveLocalStorage.bind(this)
         )
+        const {data} = await Axios.get('http//mysite.pl/to-do-list')
+        this.setState({todos : data})
     }
 
     // componentWillMount() {
