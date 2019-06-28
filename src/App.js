@@ -105,20 +105,11 @@ class App extends Component {
                 return todo;
             })
             console.log(todos)
-            // this.setState( {
-            //     todos
-            // })
+            this.setState( {
+                 todos
+            })
         }
 
-
-
-        // if (event.keyCode === 13) {
-        //     this.setState(prevState => ({
-        //         todo: {                   // object that we want to update
-        //             editing: false,       // update the value of specific key
-        //         }
-        //     }));
-        // }
     }
 
     handleEditingChange = event => {
