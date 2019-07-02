@@ -22,151 +22,152 @@ class App extends Component {
 
 
 
-    inputChangeHandler = event => {
-        this.setState({[event.target.name]: event.target.value})
-    }
+       inputChangeHandler = event => {
+           this.setState({[event.target.name]: event.target.value})
+       }
 
-    async addTask = event => {
-        event.preventDefault();
-        let newTask = {
-            task: this.state.todo,
-            id: Date.now(),
-            completed: false,
-            editing: false
-        };
-        this.setState({
-            todos: [...this.state.todos, newTask],
-            todo: ''
-        })
-        const {data} = await Axios.post('http//mysite.pl/to-do-list', newTask)
-    }
-
-
-    async onDelete = (id) =>  {
-        const search = this.state.todos.findIndex((element) => {
-            return element.id == id
-        });
-        this.state.todos.splice(search, 1)
-        this.setState({todos:this.state.todos})
-    await Axios.delete(`http//mysite.pl/to-do-list/${id}`)
-    }
-
-
-    toggleComplete = itemId => {
-        const todos = this.state.todos.map(todo => {
-            if (todo.id === itemId) {
-                todo.completed = !todo.completed
-            }
-            return todo
-        });
-        this.setState({todos, todo: ''})
-    }
-    removeItems = event => {
-        event.preventDefault();
-        this.setState(prevState => {
-            return {
-                todos: prevState.todos.filter(todo => {
-                    return !todo.completed;
-                })
-            }
-        })
-    }
-
-    updateFilter = st => {
-        this.setState({filtertodos: st})
-    }
-
-    handleEditing = (id) => {
-        let task = '';
-
-        const todos = this.state.todos.map(todo => {
-            if (todo.id === id) {
-                todo.editing = !todo.editing
-                task = todo.task
-            }
-            return todo
-        });
-        console.log("editing ", task)
-        this.setState({
-            todos : todos,
-             todo: {
-               changedText: task,
-             }
-        })
-
-    }
-    async handleEditingDone = (event, id) => {
-        console.log('editing done')
-        console.log(id)
-        if(event.keyCode === 13) {
-            const todos = this.state.todos.map(todo => {
-                if (todo.id === id) {
-                    todo.task = this.state.todo.changedText
-                    todo.editing = false
-                }
-                return todo;
-            })
-            console.log(todos)
-            this.setState( {
-                 todos
-            })
-        }
-        const {data} = await Axios.put(`http//mysite.pl/to-do-list/${id}`, todo)
-
-    }
-
-    handleEditingChange = event => {
-        let _changedText = event.target.value;
-        this.setState({
-            todo: {changedText: _changedText}
-        });
-    }
+       addTask = async (event) => {
+           event.preventDefault();
+           let newTask = {
+               task: this.state.todo,
+               id: Date.now(),
+               completed: false,
+               editing: false
+           };
+           this.setState({
+               todos: [...this.state.todos, newTask],
+               todo: ''
+           })
+          // const {data} = await Axios.post('https://jsonplaceholder.typicode.com/todos', newTask)
+       }
 
 
 
+           onDelete = async (id) =>  {
+               const search = this.state.todos.findIndex((element) => {
+                   return element.id == id
+               });
+               this.state.todos.splice(search, 1)
+               this.setState({todos:this.state.todos})
+         //  await Axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+           }
 
-    saveLocalStorage() {
 
-        for (let key in this.state) {
-            localStorage.setItem(key, JSON.stringify(this.state[key]))
-        }
-    }
+           toggleComplete = itemId => {
+               const todos = this.state.todos.map(todo => {
+                   if (todo.id === itemId) {
+                       todo.completed = !todo.completed
+                   }
+                   return todo
+               });
+               this.setState({todos, todo: ''})
+           }
+           removeItems = event => {
+               event.preventDefault();
+               this.setState(prevState => {
+                   return {
+                       todos: prevState.todos.filter(todo => {
+                           return !todo.completed;
+                       })
+                   }
+               })
+           }
 
-    getFromLocalStorage() {
+           updateFilter = st => {
+               this.setState({filtertodos: st})
+           }
 
-        for (let key in this.state) {
-            if (localStorage.hasOwnProperty(key)) {
-                let value = localStorage.getItem(key);
-                // console.log(value)
-                try {
-                    value = JSON.parse(value);
-                    this.setState({[key]: value})
-                }
-                catch(event) {
-                    this.setState({[key]: value})
-                }
+           handleEditing = (id) => {
+               let task = '';
+
+               const todos = this.state.todos.map(todo => {
+                   if (todo.id === id) {
+                       todo.editing = !todo.editing
+                       task = todo.task
+                   }
+                   return todo
+               });
+               console.log("editing ", task)
+               this.setState({
+                   todos : todos,
+                    todo: {
+                      changedText: task,
+                    }
+               })
+
+           }
+
+           handleEditingDone = async (event, id) => {
+               console.log('editing done')
+               console.log(id)
+               if(event.keyCode === 13) {
+                   const todos = this.state.todos.map(todo => {
+                       if (todo.id === id) {
+                           todo.task = this.state.todo.changedText
+                           todo.editing = false
+                       }
+                       return todo;
+                   })
+                   console.log(todos)
+                   this.setState( {
+                        todos
+                   })
+               }
+               //const {data} = await Axios.put(`https://jsonplaceholder.typicode.com/todos/${id}`, todo)
+
+           }
+
+           handleEditingChange = event => {
+               let _changedText = event.target.value;
+               this.setState({
+                   todo: {changedText: _changedText}
+               });
+           }
+
+
+
+        saveLocalStorage() {
+
+            for (let key in this.state) {
+                localStorage.setItem(key, JSON.stringify(this.state[key]))
             }
         }
-    }
 
-    async componentDidMount() {
-        this.getFromLocalStorage();
-        window.addEventListener(
-            "beforeunload",
+        getFromLocalStorage() {
 
-            this.saveLocalStorage.bind(this)
-        )
-        const {data} = await Axios.get('http//mysite.pl/to-do-list')
-        this.setState({todos : data})
-    }
+            for (let key in this.state) {
+                if (localStorage.hasOwnProperty(key)) {
+                    let value = localStorage.getItem(key);
+                    // console.log(value)
+                    try {
+                        value = JSON.parse(value);
+                        this.setState({[key]: value})
+                    }
+                    catch(event) {
+                        this.setState({[key]: value})
+                    }
+                }
+            }
+        }
 
-    // componentWillMount() {
-    //     window.removeEventListener(
-    //         "beforeunload",
-    //         this.saveLocalStorage.bind(this)
-    //     )
-    // }
+        async componentDidMount() {
+            this.getFromLocalStorage();
+            window.addEventListener(
+                "beforeunload",
 
+                this.saveLocalStorage.bind(this)
+            )
+         //   const {data} = await Axios.get('https://jsonplaceholder.typicode.com/todos', {
+         //   })
+         //  this.setState({todos : data})
+        }
+
+        // componentWillMount() {
+        //     window.removeEventListener(
+        //         "beforeunload",
+        //         this.saveLocalStorage.bind(this)
+        //     )
+        // }
 
     render() {
 
