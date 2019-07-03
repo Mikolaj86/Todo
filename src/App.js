@@ -38,7 +38,7 @@ class App extends Component {
                todos: [...this.state.todos, newTask],
                todo: ''
            })
-          // const {data} = await Axios.post('https://jsonplaceholder.typicode.com/todos', newTask)
+           const {data} = await Axios.post('http://localhost:8000/todoes_create/', newTask)
        }
 
 
@@ -49,7 +49,7 @@ class App extends Component {
                });
                this.state.todos.splice(search, 1)
                this.setState({todos:this.state.todos})
-         //  await Axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+           await Axios.delete(`http://localhost:8000/todoes_destroy/${id}/`)
            }
 
 
@@ -124,51 +124,54 @@ class App extends Component {
                });
            }
 
+           async componentDidMount() {
+                const {data} = await Axios.get('http://127.0.0.1:8000/todoes_read/', {
+                })
+                this.setState({todos : data})
+           }
 
 
-        saveLocalStorage() {
+    /*
+           saveLocalStorage() {
 
-            for (let key in this.state) {
-                localStorage.setItem(key, JSON.stringify(this.state[key]))
-            }
-        }
+               for (let key in this.state) {
+                   localStorage.setItem(key, JSON.stringify(this.state[key]))
+               }
+           }
 
-        getFromLocalStorage() {
+           getFromLocalStorage() {
 
-            for (let key in this.state) {
-                if (localStorage.hasOwnProperty(key)) {
-                    let value = localStorage.getItem(key);
-                    // console.log(value)
-                    try {
-                        value = JSON.parse(value);
-                        this.setState({[key]: value})
-                    }
-                    catch(event) {
-                        this.setState({[key]: value})
-                    }
-                }
-            }
-        }
+               for (let key in this.state) {
+                   if (localStorage.hasOwnProperty(key)) {
+                       let value = localStorage.getItem(key);
+                       // console.log(value)
+                       try {
+                           value = JSON.parse(value);
+                           this.setState({[key]: value})
+                       }
+                       catch(event) {
+                           this.setState({[key]: value})
+                       }
+                   }
+               }
+           }
 
-        async componentDidMount() {
-            this.getFromLocalStorage();
-            window.addEventListener(
-                "beforeunload",
+           componentDidMount() {
+               this.getFromLocalStorage();
+               window.addEventListener(
+                   "beforeunload",
 
-                this.saveLocalStorage.bind(this)
-            )
-         //   const {data} = await Axios.get('https://jsonplaceholder.typicode.com/todos', {
-         //   })
-         //  this.setState({todos : data})
-        }
+                   this.saveLocalStorage.bind(this)
+               )
+           }
 
-        // componentWillMount() {
-        //     window.removeEventListener(
-        //         "beforeunload",
-        //         this.saveLocalStorage.bind(this)
-        //     )
-        // }
-
+           // componentWillMount() {
+           //     window.removeEventListener(
+           //         "beforeunload",
+           //         this.saveLocalStorage.bind(this)
+           //     )
+           // }
+    */
     render() {
 
         let todos = [];
