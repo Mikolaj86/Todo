@@ -53,15 +53,20 @@ class App extends Component {
            }
 
 
-           toggleComplete = itemId => {
+           toggleComplete = async (id) => {
+               const currentTodo = {}
                const todos = this.state.todos.map(todo => {
-                   if (todo.id === itemId) {
+                   if (todo.id === id) {
                        todo.completed = !todo.completed
+                       currentTodo.task = todo.task
+                       currentTodo.completed = todo.completed
                    }
                    return todo
                });
                this.setState({todos, todo: ''})
+               const {data} = await Axios.put(`http://127.0.0.1:8000/todoes_update/${id}/`, currentTodo)
            }
+
            removeItems = event => {
                event.preventDefault();
                this.setState(prevState => {
@@ -87,7 +92,7 @@ class App extends Component {
                    }
                    return todo
                });
-               console.log("editing ", task)
+              // console.log("editing ", task)
                this.setState({
                    todos : todos,
                     todo: {
@@ -98,22 +103,27 @@ class App extends Component {
            }
 
            handleEditingDone = async (event, id) => {
-               console.log('editing done')
-               console.log(id)
+              // console.log('editing done')
+              // console.log(id)
+               const currentTodo = {}
                if(event.keyCode === 13) {
                    const todos = this.state.todos.map(todo => {
                        if (todo.id === id) {
                            todo.task = this.state.todo.changedText
                            todo.editing = false
+                           currentTodo.task = todo.task
+                           currentTodo.completed = todo.completed
                        }
                        return todo;
                    })
-                   console.log(todos)
+                //   console.log(todos)
                    this.setState( {
                         todos
                    })
+                   const {data} = await Axios.put(`http://127.0.0.1:8000/todoes_update/${id}/`, currentTodo)
                }
-               //const {data} = await Axios.put(`https://jsonplaceholder.typicode.com/todos/${id}`, todo)
+
+
 
            }
 
