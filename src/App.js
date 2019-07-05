@@ -16,7 +16,7 @@ class App extends Component {
             ],
             todo: '',
             // an empty string to hold an individual to-do
-            filtertodos: []
+            filtertodos: 'all'
         }
     }
 
@@ -67,16 +67,28 @@ class App extends Component {
                const {data} = await Axios.put(`http://127.0.0.1:8000/todoes_update/${id}/`, currentTodo)
            }
 
-           removeItems = event => {
+           removeItems = (event) => {
                event.preventDefault();
+               let completed = [];
                this.setState(prevState => {
                    return {
                        todos: prevState.todos.filter(todo => {
+                           if (todo.completed == true) {
+                               completed.push(todo)
+                           }
                            return !todo.completed;
                        })
                    }
                })
-           }
+               console.log(completed);
+               const remove = completed.map( async (todo) => {
+                   console.log(todo);
+                   await Axios.delete(`http://localhost:8000/todoes_destroy/${todo.id}/`)
+
+               }
+           )
+    }
+
 
            updateFilter = st => {
                this.setState({filtertodos: st})
@@ -185,7 +197,6 @@ class App extends Component {
     render() {
 
         let todos = [];
-
         if (this.state.filtertodos === 'all') {
             todos = this.state.todos;
         } else if (this.state.filtertodos === 'uncomplete') {
