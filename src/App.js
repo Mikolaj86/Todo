@@ -68,18 +68,15 @@ class App extends Component {
 
            removeItems = async (event) => {
                event.preventDefault();
-
                const completed = this.state.todos.filter(todo => {
                    return todo.completed
                });
 
-               console.log(completed);
                const remove = completed.map( async (todo) => {
-                   return todo
-                   await Axios.delete(`http://localhost:8000/todoes_destroy/${todo.id}/`)
-                   console.log(todo);
-               }
-           )
+                       console.log(todo);
+                       await Axios.delete(`http://localhost:8000/todoes_destroy/${todo.id}/`)
+                   }
+               )
 
                 const {data} = await Axios.get('http://127.0.0.1:8000/todoes_read/', {
                  })
