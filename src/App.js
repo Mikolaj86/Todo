@@ -73,7 +73,7 @@ class App extends Component {
                });
 
                const remove = completed.map( async (todo) => {
-                       console.log(todo);
+                      //  console.log(todo);
                        await Axios.delete(`http://localhost:8000/todoes_destroy/${todo.id}/`)
                    }
                )
@@ -82,16 +82,6 @@ class App extends Component {
                  })
                 this.setState({todos : data})
 
-               // this.setState(prevState => {
-               //     return {
-               //         todos: prevState.todos.filter(todo => {
-               //             if (todo.completed == true) {
-               //                 completed.push(todo)
-               //             }
-               //             return !todo.completed;
-               //         })
-               //     }
-               // })
     }
 
            updateFilter = st => {
@@ -150,47 +140,6 @@ class App extends Component {
            }
 
 
-    /*
-           saveLocalStorage() {
-
-               for (let key in this.state) {
-                   localStorage.setItem(key, JSON.stringify(this.state[key]))
-               }
-           }
-
-           getFromLocalStorage() {
-
-               for (let key in this.state) {
-                   if (localStorage.hasOwnProperty(key)) {
-                       let value = localStorage.getItem(key);
-                       // console.log(value)
-                       try {
-                           value = JSON.parse(value);
-                           this.setState({[key]: value})
-                       }
-                       catch(event) {
-                           this.setState({[key]: value})
-                       }
-                   }
-               }
-           }
-
-           componentDidMount() {
-               this.getFromLocalStorage();
-               window.addEventListener(
-                   "beforeunload",
-
-                   this.saveLocalStorage.bind(this)
-               )
-           }
-
-           // componentWillMount() {
-           //     window.removeEventListener(
-           //         "beforeunload",
-           //         this.saveLocalStorage.bind(this)
-           //     )
-           // }
-    */
     render() {
 
         let todos = [];
