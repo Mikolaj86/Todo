@@ -37,7 +37,7 @@ class App extends Component {
                todos: [...this.state.todos, newTask],
                todo: ''
            })
-           const {data} = await Axios.post('http://localhost:8000/todoes_create/', newTask)
+           const {data} = await Axios.post('http://127.0.0.1:8000/todoes_create/', newTask)
        }
 
 
@@ -48,7 +48,7 @@ class App extends Component {
                });
                this.state.todos.splice(search, 1)
                this.setState({todos:this.state.todos})
-           await Axios.delete(`http://localhost:8000/todoes_destroy/${id}/`)
+           await Axios.delete(`http://127.0.0.1:8000/todoes_destroy/${id}/`)
            }
 
 
@@ -74,7 +74,7 @@ class App extends Component {
 
                const remove = completed.map( async (todo) => {
                       //  console.log(todo);
-                       await Axios.delete(`http://localhost:8000/todoes_destroy/${todo.id}/`)
+                       await Axios.delete(`http://127.0.0.1:8000/todoes_destroy/${todo.id}/`)
                    }
                )
 
