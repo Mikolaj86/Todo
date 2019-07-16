@@ -3,6 +3,7 @@ import List from './components/TodoList';
 import Form from './components/TodoForm';
 import Header from './components/Header';
 import Axios from 'axios';
+import './index.css';
 
 class App extends Component {
     constructor(props) {

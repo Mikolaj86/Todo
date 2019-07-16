@@ -4,7 +4,7 @@ import Todo from './Todo';
 const List = props => {
    // console.log(props)
     return (
-        <div>
+        <div className="todo-div">
             {props.todos.map((todo, id) => (
             <Todo todo={todo} key={id} toggleComplete={props.toggleComplete} onDelete={props.onDelete}
                   handleEditing={props.handleEditing}

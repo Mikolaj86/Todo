@@ -12,3 +12,44 @@ code {
     monospace;
 }
 
+.App {
+  width: 500px;
+  margin: 30px auto;
+  border-top: solid 8px teal;
+  background-color: #daedf0;
+  box-shadow: 10px 10px 30px 1px #95c0c6;
+}
+.head-div {
+  background-color: #fff;
+  padding: 10px 20px;
+  text-align: center;
+}
+.form-div {
+  padding: 20px 20px;
+}
+.form-div input {
+  padding: 0 10px;
+  margin: 0 10px 20px 0;
+  width: 350px;
+  height: 30px;
+  font-size: 15px;
+  border: 0;
+}
+.todo-div {
+  padding: 0 20px 20px 20px;
+}
+.todo {
+  margin: 10px 0;
+  border-bottom: #fff dotted;
+}
+.todo button {
+  margin: 0 5px;
+}
+.form-button {
+  margin: 0 10px 0 0;
+  height: 30px;
+
+}
+.form-task-button {
+  height: 30px;
+}
