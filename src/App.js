@@ -34,14 +34,18 @@ class App extends Component {
                completed: false,
                editing: false
            };
-           this.setState({
-               todos: [...this.state.todos, newTask],
-               todo: ''
-           })
-           const {data} = await Axios.post('http://127.0.0.1:8000/todoes_create/', newTask)
-       }
 
-
+           const data = await Axios.post('http://127.0.0.1:8000/todoes_create/', newTask)
+               .then(() => {
+                   this.setState({
+                       todos: [...this.state.todos, newTask]}
+                       );
+               })
+               .catch((error) => {
+                   console.log(error.response.data);
+                   alert('You MUST type something in the input field!');
+               })
+    }
 
            onDelete = async (id) =>  {
                const search = this.state.todos.findIndex((element) => {
@@ -83,16 +87,6 @@ class App extends Component {
                    return !todo.completed
                });
                this.setState({todos: undone})
-
-               //  const {data} = await Axios.get('http://127.0.0.1:8000/todoes_read/', {
-               //   })
-               // // this.setState({todos : data})
-               // this.setState( prevState => {
-               //     return {
-               //             ...prevState.todos, todos: data
-               //     }
-               // })
-
     }
 
            updateFilter = st => {
