@@ -41,15 +41,19 @@ code {
 .todo {
   margin: 10px 0;
   border-bottom: #fff dotted;
+  display: flex;
+}
+.todo-buttons {
+  margin-left: auto;
 }
 .todo button {
-  margin: 0 5px;
+  height: 30px;
+  vertical-align: sub;
 }
 .form-button {
   margin: 0 10px 0 0;
   height: 30px;
-
-}
+ }
 .form-task-button {
   height: 30px;
 }
