@@ -79,9 +79,19 @@ class App extends Component {
                    }
                )
 
-                const {data} = await Axios.get('http://127.0.0.1:8000/todoes_read/', {
-                 })
-                this.setState({todos : data})
+               const undone = this.state.todos.filter(todo => {
+                   return !todo.completed
+               });
+               this.setState({todos: undone})
+
+               //  const {data} = await Axios.get('http://127.0.0.1:8000/todoes_read/', {
+               //   })
+               // // this.setState({todos : data})
+               // this.setState( prevState => {
+               //     return {
+               //             ...prevState.todos, todos: data
+               //     }
+               // })
 
     }
 
